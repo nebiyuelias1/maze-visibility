@@ -1,0 +1,35 @@
+﻿  Building Custom Rule C:/Users/Nebiyu/source/repos/maze-visibility/CMakeLists.txt
+  MapWidget.cpp
+  Maze.cpp
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(44,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(121,31): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(122,31): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(144,54): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(146,59): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(157,54): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(159,59): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(169,54): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(171,59): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(181,54): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(183,59): warning C4312: 'type cast': conversion from 'int' to 'Cell *' of greater size
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(88,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(92,7): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(99,8): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(100,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(107,7): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(115,8): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(117,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(127,7): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(135,8): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(136,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(149,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(162,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(174,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(186,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(194,7): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(378,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Nebiyu\source\repos\maze-visibility\src\Maze.cpp(772,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  MazeWindow.cpp
+  RunMaze.cpp
+  Generating Code...
+  MazeVisibility.vcxproj -> C:\Users\Nebiyu\source\repos\maze-visibility\Release\MazeVisibility.exe

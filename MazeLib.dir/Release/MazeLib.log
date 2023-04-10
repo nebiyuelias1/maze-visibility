@@ -1,0 +1,7 @@
+﻿  Building Custom Rule C:/Users/Nebiyu/source/repos/maze-visibility/CMakeLists.txt
+  Cell.cpp
+  Edge.cpp
+  LineSeg.cpp
+  Vertex.cpp
+  Generating Code...
+  MazeLib.vcxproj -> C:\Users\Nebiyu\source\repos\maze-visibility\Release\MazeLib.lib

@@ -1,0 +1,10 @@
+^C:\USERS\NEBIYU\SOURCE\REPOS\MAZE-VISIBILITY\CMAKEFILES\9649FC128388C6DED736596009C02D0D\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Nebiyu/source/repos/maze-visibility -BC:/Users/Nebiyu/source/repos/maze-visibility --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Nebiyu/source/repos/maze-visibility/MazeVisibility.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
