@@ -21,6 +21,7 @@
 
 #include <FL/math.h> // Use FLTK's math header because it defines M_PI
 #include "Cell.h"
+#include "LineSeg.h"
 
 //************************************************************************
 //
@@ -98,12 +99,95 @@ class Maze {
 		// THIS IS THE FUINCTION YOU SHOULD MODIFY.
 		void	Draw_View(const float);
 
+		void Draw_Cell(Cell* cell, LineSeg left, LineSeg right);
+
+		bool Maze::
+			Clip(LineSeg* edge, LineSeg left, LineSeg right);
+
+		// Create the PerspectiveProjection Matrix
+		static float* PerspectiveProjectionMatrix(float fov, float aspect);
+
+		// Create the View Matrix
+		static float* ViewMatrix(float cameraX, float cameraY, float cameraZ, 
+								float lookAtX, float lookAtY, float lookAtZ,
+								float upX, float upY, float upZ);
+		
 		// Save the maze to a file of the given name.
 		bool	Save(const char*);
 
 		// Functions to convert between degrees and radians.
 		static double   To_Radians(double deg) { return deg / 180.0 * M_PI; };
 		static double   To_Degrees(double rad) { return rad * 180.0 / M_PI; };
+
+		static float* Maze::Transpose_Matrix(float* originalMatrix) 
+		{
+			float* transpose = new float[16]{ 0 };
+
+			for (int i = 0; i < 4; ++i)
+				for (int j = 0; j < 4; ++j)
+					transpose[j * 4 + i] = originalMatrix[i * 4 + j];
+
+			return transpose;
+		}
+
+		static float* Maze::CrossProduct(float* a, float* b)
+		{
+			float* vector = new float[3]{	a[1] * b[2] - a[2] * b[1],
+											a[2] * b[0] - a[0] * b[2],
+											a[0] * b[1] - a[1] * b[0] };
+
+			return vector;
+		}
+
+		static float* Maze::UnitVector(float* v)
+		{
+			float* unitVector = new float[3]{ 0 };
+
+			float length = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+			if (length > 0)
+			{
+				unitVector[0] = (float)v[0] / length;
+				unitVector[1] = (float)v[1] / length;
+				unitVector[2] = (float)v[2] / length;
+			}
+
+			return unitVector;
+		}
+
+		static float* Maze::MultiplyMatrices(float* a, float* b)
+		{
+			float* product = new float[16]{ 0 };
+
+			for (int i = 0; i < 4; ++i)
+				for (int j = 0; j < 4; ++j)
+					for (int k = 0; k < 4; ++k)
+						product[i * 4 + j] += a[i * 4 + k] * b[k * 4 + j];;
+
+			return product;
+		}
+
+		static float* Maze::MultiplyMatrixByVector(float* matrix, float* vector)
+		{
+			float* newVector = new float[4]{ 0 };
+
+			for (int i = 0; i < 4; ++i)
+				for (int j = 0; j < 4; ++j)
+					newVector[i] += matrix[j * 4 + i] * vector[j];
+
+			return newVector;
+		}
+
+		float* Maze::
+			NormalizeMatrix(float* matrix)
+		{
+			int w = matrix[3] > 0 ? matrix[3] : -1.0 * matrix[3];
+
+			matrix[0] /= (float)w;
+			matrix[1] /= (float)w;
+			matrix[2] /= (float)w;
+
+			return matrix;
+		}
 	private:
 		// Functions used when creating or loading a maze.
 
