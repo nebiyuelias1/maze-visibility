@@ -38,6 +38,16 @@ class LineSeg {
 		// But you can use tests like Edge::Point_Side() to figure that out.
 		float   Cross_Param(LineSeg);
 
+		char	Point_Side(float x, float y);
+
+
+	// Constants.
+	// To access these outside the edge class, use Edge::LEFT etc.
+	public:
+		static const char	LEFT;
+		static const char	RIGHT;
+		static const char	ON;
+
 	public:
 		float   start[2];	// Starting point, x and y.
 		float   end[2];	// Ending point, x and y.

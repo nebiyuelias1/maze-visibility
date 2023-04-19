@@ -17,6 +17,11 @@
 
 #include "LineSeg.h"
 
+const char  LineSeg::LEFT = 0;
+const char  LineSeg::RIGHT = 1;
+const char  LineSeg::ON = 2;
+
+
 //**********************************************************************
 //
 // * Constructor from an edge
@@ -77,4 +82,27 @@ Cross_Param(LineSeg e)
 	s = ( e.start[0] - start[0] ) * dy1 - ( e.start[1] - start[1] ) * dx1;
 
 	return s / denom;
+}
+
+char LineSeg::
+Point_Side(float x, float y)
+//=======================================================================
+{
+	// Compute the determinant: | xs ys 1 |
+	//                          | xe ye 1 |
+	//                          | x  y  1 |
+	// Use its sign to get the answer.
+
+	float   det;
+
+	det = start[0] * (end[1] - y) -
+		start[1] * (end[0] - x) +
+		end[0] * y - end[1] * x;
+
+	if (det == 0.0)
+		return ON;
+	else if (det > 0.0)
+		return LEFT;
+	else
+		return RIGHT;
 }

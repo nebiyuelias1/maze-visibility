@@ -22,6 +22,7 @@
 #include <FL/math.h> // Use FLTK's math header because it defines M_PI
 #include "Cell.h"
 #include "LineSeg.h"
+#include "../Frustum.h"
 
 //************************************************************************
 //
@@ -99,10 +100,7 @@ class Maze {
 		// THIS IS THE FUINCTION YOU SHOULD MODIFY.
 		void	Draw_View(const float);
 
-		void Draw_Cell(Cell* cell, LineSeg left, LineSeg right);
-
-		bool Maze::
-			Clip(LineSeg* edge, LineSeg left, LineSeg right);
+		void Draw_Cell(Cell* cell, Frustum*);
 
 		// Create the PerspectiveProjection Matrix
 		static float* PerspectiveProjectionMatrix(float fov, float aspect);

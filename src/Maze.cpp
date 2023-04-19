@@ -24,6 +24,10 @@
 #include <time.h>
 #include <FL/Fl.h>
 #include <FL/fl_draw.h>
+#include <Fl/gl.h>
+#include <GL/glu.h>
+#include "LineSeg.h"
+#include "../Frustum.h"
 
 const char Maze::X = 0;
 const char Maze::Y = 1;
@@ -632,10 +636,148 @@ Draw_View(const float focal_dist)
 {
 	frame_num++;
 
-	//###################################################################
-	// TODO
-	// The rest is up to you!
-	//###################################################################
+	for (int i = 0; i < num_cells; i++)
+	{
+		cells[i]->visited = false;
+	}
+
+	LineSeg* left = new LineSeg(viewer_posn[0], viewer_posn[1],
+		viewer_posn[0] + cosf(To_Radians(viewer_dir - viewer_fov / 2)),
+		viewer_posn[1] + sinf(To_Radians(viewer_dir - viewer_fov / 2)));
+	
+	LineSeg* right = new LineSeg(viewer_posn[0], viewer_posn[1],
+		viewer_posn[0] + cosf(To_Radians(viewer_dir + viewer_fov / 2)),
+		viewer_posn[1] + sinf(To_Radians(viewer_dir + viewer_fov / 2)));
+	
+	Frustum* frustum = new Frustum(left, right);
+
+	Draw_Cell(view_cell, frustum);
+}
+
+void Maze::Draw_Cell(Cell* cell, Frustum* frustum)
+{
+	if (cell && !(cell->visited))
+	{
+		cell->visited = true;
+		for (auto edge : cell->edges)
+		{
+			LineSeg* E = new LineSeg(edge);
+
+			// Clip and draw opaque edges of the current cell
+			if (edge->opaque)
+			{
+				if (!frustum->Clip_Edge(E))
+					continue;
+
+				float* v1 = new float[4]{ E->start[1], 1.0f, E->start[0], 1.0f };
+				float* v2 = new float[4]{ E->end[1], 1.0f, E->end[0], 1.0f };
+				float* v3 = new float[4]{ E->end[1], -1.0f, E->end[0], 1.0f };
+				float* v4 = new float[4]{ E->start[1], -1.0f, E->start[0], 1.0f };
+
+				float viewer_pos[3] = { viewer_posn[Maze::Y], 0.0f, viewer_posn[Maze::X] };
+
+				float* viewMatrix = Maze::ViewMatrix(viewer_pos[Maze::X], viewer_pos[Maze::Y], viewer_pos[Maze::Z],
+					viewer_pos[Maze::X] + sin(Maze::To_Radians(viewer_dir)), viewer_pos[Maze::Y], viewer_pos[Maze::Z] + cos(Maze::To_Radians(viewer_dir)),
+					0.0, 1.0, 0.0);
+
+				v1 = Maze::MultiplyMatrixByVector(viewMatrix, v1);
+				v2 = Maze::MultiplyMatrixByVector(viewMatrix, v2);
+				v3 = Maze::MultiplyMatrixByVector(viewMatrix, v3);
+				v4 = Maze::MultiplyMatrixByVector(viewMatrix, v4);
+
+				GLint viewport[4];
+				glGetIntegerv(GL_VIEWPORT, viewport);
+				int viewportWidth = viewport[2];
+				int viewportHeight = viewport[3];
+
+				float aspectRatio = (float)viewportWidth / viewportHeight;
+
+				float* projectionMatrix = Maze::PerspectiveProjectionMatrix(viewer_fov, aspectRatio);
+
+				v1 = Maze::MultiplyMatrixByVector(projectionMatrix, v1);
+				v2 = Maze::MultiplyMatrixByVector(projectionMatrix, v2);
+				v3 = Maze::MultiplyMatrixByVector(projectionMatrix, v3);
+				v4 = Maze::MultiplyMatrixByVector(projectionMatrix, v4);
+
+				v1 = Maze::NormalizeMatrix(v1);
+				v2 = Maze::NormalizeMatrix(v2);
+				v3 = Maze::NormalizeMatrix(v3);
+				v4 = Maze::NormalizeMatrix(v4);
+
+				// Draw the clipped edge as a wall
+				glBegin(GL_POLYGON);
+					glColor3fv(edge->color); // set wall color
+					glVertex2fv(v1);
+					glVertex2fv(v2);
+					glVertex2fv(v3);
+					glVertex2fv(v4);
+				glEnd();
+			}
+			else
+			{
+				if (!frustum->Clip_Edge(E))
+					continue;
+
+				Draw_Cell(edge->Neighbor(cell), frustum);
+			}
+		}
+	}
+}
+
+
+
+float* Maze::PerspectiveProjectionMatrix(float fov, float aspectRatio)
+{
+	// Compute the perspective projection matrix manually
+	float nearPlane = 0.1f;    // Near clipping plane
+	float farPlane = 200.0f;   // Far clipping plane
+
+	float tanHalfFov = tanf(Maze::To_Radians(fov / 2.0f));
+	float top = nearPlane * tanHalfFov;
+	float bottom = -top;
+	float right = top * aspectRatio;
+	float left = -right;
+
+	float* projectionMatrix = new float[16]{ 0 };
+
+	projectionMatrix[0] = (float)2 * nearPlane / (right - left);
+	projectionMatrix[2] = (float)(right + left) / (right - left);
+	projectionMatrix[5] = (float)2 * nearPlane / (top - bottom);
+	projectionMatrix[6] = (float)(top + bottom) / (top - bottom);
+	projectionMatrix[10] = (float)(nearPlane + farPlane) / (nearPlane - farPlane);
+	projectionMatrix[11] = (float)2 * nearPlane * farPlane / (nearPlane - farPlane);
+	projectionMatrix[14] = (float)-1.0;
+
+	// Transpose the projection matrix
+	return Maze::Transpose_Matrix(projectionMatrix);
+}
+
+float* Maze::ViewMatrix(float cameraX, float cameraY, float cameraZ, float lookAtX, float lookAtY, float lookAtZ, float upX, float upY, float upZ)
+{
+	float position[] = { cameraX - lookAtX, cameraY - lookAtY, cameraZ - lookAtZ};
+	float up[] = { upX, upY, upZ };
+
+	float* viewMatrix;
+
+	float* zAxis = Maze::UnitVector(position);
+	float* xAxis = Maze::UnitVector(Maze::CrossProduct(up, zAxis));
+	float* yAxis = Maze::UnitVector(Maze::CrossProduct(zAxis, xAxis));
+
+	float* rotateMatrix = new float[16]{  xAxis[0], xAxis[1], xAxis[2], 0,
+										  yAxis[0], yAxis[1], yAxis[2], 0,
+										  zAxis[0], zAxis[1], zAxis[2], 0,
+										  0,		   0,		 0,		   1 };
+
+	float* translateMatrix = new float[16]{ 1, 0, 0, (float)-cameraX,
+										0, 1, 0, (float)-cameraY,
+										0, 0, 1, (float)-cameraZ,
+										0, 0, 0, 1 };
+
+	viewMatrix = Maze::MultiplyMatrices(rotateMatrix, translateMatrix);
+
+	viewMatrix = Maze::Transpose_Matrix(viewMatrix);
+
+	return viewMatrix;
 }
 
 
