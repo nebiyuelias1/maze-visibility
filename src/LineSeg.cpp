@@ -88,11 +88,6 @@ char LineSeg::
 Point_Side(float x, float y)
 //=======================================================================
 {
-	// Compute the determinant: | xs ys 1 |
-	//                          | xe ye 1 |
-	//                          | x  y  1 |
-	// Use its sign to get the answer.
-
 	float   det;
 
 	det = start[0] * (end[1] - y) -
